@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isaac Kweku Frimpong | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<nav class="main-nav" aria-label="Primary navigation">
+    <h2 class="brand">portfolio</h2>
+    <button id="menu-btn" class="menu-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle menu">☰</button>
+    <ul id="nav-links" class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="hero-inner">
+        <div class="avatar">
+            <img src="logo2.jpeg" alt="Isaac Kweku Frimpong profile photo">
+        </div>
+        <h1>Hello, I'm <span class="accent">Isaac Kweku Frimpong</span></h1>
+        <p class="typing">Aspiring Front-End Dev | Cybersecurity Enthusiast | Problem Solver</p>
+    </div>
+</section>
+<!-- ABOUT -->
+<main>
+    <section class="about">
+        <h2 class="section-title" id="about">About Me</h2>
+        <p class="about-text">I am a passionate technology learner with interests in frontend development, cybersecurity, and software problem solving. I enjoy creating clean interfaces, learning new technologies, and building secure applications.</p>
+    </section>
+
+<!-- SKILLS -->
+    <section class="skills">
+        <h2 class="section-title" id="skills">Skills</h2>
+        <div class="card-container">
+            <div class="card">Web Development</div>
+            <div class="card">Mobile App Development</div>
+            <div class="card">C++ Programming</div>
+            <div class="card">Critical Thinking</div>
+            <div class="card">Communication Skills</div>
+        </div>
+    </section>
+
+<!-- PROJECTS -->
+    <section class="projects">
+        <h2 class="section-title" id="projects">Projects</h2>
+        <div class="card-container">
+            <article class="card project-card">
+                <img src="assets/port.png" alt="Portfolio screenshot">
+                <h3>Portfolio Website</h3>
+                <p>This website — showcasing skills, projects, and personal brand in a dark neon style.</p>
+                <a class="button" href="#" target="_blank" rel="noopener">View Code</a>
+            </article>
+
+            <article class="card project-card">
+                <img src="assets/password.jpg" alt="Password manager screenshot">
+                <h3>Password Manager (Incoming)</h3>
+                <p>Offline encrypted password vault (work-in-progress).</p>
+                <a class="button" href="#" target="_blank" rel="noopener">View Code</a>
+            </article>
+
+            <article class="card project-card">
+                <img src="assets/todo.jpg" alt="Mobile todo app screenshot">
+                <h3>Mobile Todo App (Incoming)</h3>
+                <p>Flutter + Firebase productivity app (planning & prototyping stage).</p>
+                <a class="button" href="#" target="_blank" rel="noopener">View Code</a>
+            </article>
+        </div>
+    </section>
+<!-- CONTACT -->
+    <section class="contact" id="contact">
+        <h2 class="section-title">Contact</h2>
+        <p class="contact-lead">Want to work together or ask a question? Send a message below.</p>
+        <form id="contact-form" class="contact-form" method="POST" action="#">
+            <label>
+                <span class="sr-only">Your name</span>
+                <input type="text" name="name" id="name" placeholder="Your name" required>
+            </label>
+            <label>
+                <span class="sr-only">Your email</span>
+                <input type="email" name="email" id="email" placeholder="Your email" required>
+            </label>
+            <label>
+                <span class="sr-only">Message</span>
+                <textarea name="message" id="message" rows="5" placeholder="Message" required></textarea>
+            </label>
+            <button type="submit" class="button">Send Message</button>
+            <p id="contact-status" role="status" aria-live="polite" style="margin-top:8px;color:var(--muted)"></p>
+            <p class="contact-note">Or email: <a href="mailto:unrulysypha1@gmail.com">unrulysypha1@gmail.com</a></p>
+        </form>
+    </section>
+</main>
+
+<footer>
+    © 2025 | designed by Isaac Frimpong
+</footer>
+
+<script>
+// Mobile nav toggle
+const menuBtn = document.getElementById('menu-btn');
+const nav = document.querySelector('.main-nav');
+const navLinks = document.getElementById('nav-links');
+menuBtn.addEventListener('click', () => {
+    const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+    menuBtn.setAttribute('aria-expanded', String(!expanded));
+    nav.classList.toggle('open');
+});
+
+// Simple contact form validation and placeholder submit handler
+const form = document.getElementById('contact-form');
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const statusEl = document.getElementById('contact-status');
+    if (!name || !email || !message) {
+        statusEl.textContent = 'Please fill in all fields before sending.';
+        return;
+    }
+
+    statusEl.textContent = 'Sending...';
+
+    try {
+        // default to localhost:3000 backend; change if your backend uses a different port
+        const apiBase = 'http://localhost:3000';
+        const res = await fetch(apiBase + '/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            statusEl.textContent = 'Message sent — thank you!';
+            form.reset();
+        } else {
+            statusEl.textContent = data.error || 'Error sending message.';
+        }
+    } catch (err) {
+        console.error(err);
+        statusEl.textContent = 'Network error — try again later.';
+    }
+});
+
+// LIGHTBOX: open clicked project images in a modal with prev/next
+(() => {
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightbox.innerHTML = `
+        <div class="lightbox-inner" role="dialog" aria-modal="true">
+            <button class="lightbox-close" aria-label="Close">✕</button>
+            <img class="lightbox-img" src="" alt="">
+            <div class="lightbox-caption"></div>
+            <div class="lightbox-controls">
+                <button class="lightbox-btn" data-action="prev" aria-label="Previous">◀</button>
+                <button class="lightbox-btn" data-action="next" aria-label="Next">▶</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(lightbox);
+
+    const imgs = Array.from(document.querySelectorAll('.project-card img'));
+    const imgEl = lightbox.querySelector('.lightbox-img');
+    const captionEl = lightbox.querySelector('.lightbox-caption');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+    const prevBtn = lightbox.querySelector('[data-action="prev"]');
+    const nextBtn = lightbox.querySelector('[data-action="next"]');
+
+    let current = -1;
+    function open(index){
+        if (index < 0 || index >= imgs.length) return;
+        current = index;
+        const src = imgs[current].getAttribute('src');
+        const alt = imgs[current].getAttribute('alt') || '';
+        const title = imgs[current].closest('.card').querySelector('h3')?.textContent || '';
+        imgEl.src = src;
+        imgEl.alt = alt;
+        captionEl.textContent = title;
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden','false');
+        // focus close for accessibility
+        closeBtn.focus();
+    }
+    function close(){
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden','true');
+        imgEl.src = '';
+    }
+
+    imgs.forEach((im, i) => {
+        im.style.cursor = 'zoom-in';
+        im.addEventListener('click', () => open(i));
+    });
+
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', () => open((current - 1 + imgs.length) % imgs.length));
+    nextBtn.addEventListener('click', () => open((current + 1) % imgs.length));
+
+    // keyboard support
+    document.addEventListener('keydown', (e) => {
+        if (lightbox.getAttribute('aria-hidden') === 'false'){
+            if (e.key === 'Escape') close();
+            if (e.key === 'ArrowLeft') open((current - 1 + imgs.length) % imgs.length);
+            if (e.key === 'ArrowRight') open((current + 1) % imgs.length);
+        }
+    });
+
+    // click outside image closes
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) close();
+    });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "portfolio-backend",
+  "version": "1.0.0",
+  "description": "Simple backend to accept contact form submissions for local development",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "helmet": "^6.0.1",
+    "express-rate-limit": "^6.7.0"
+  }
+}

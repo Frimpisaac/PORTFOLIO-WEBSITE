@@ -133,6 +133,20 @@ form.addEventListener('submit', async (e) => {
     try {
         // default to localhost:3000 backend; change if your backend uses a different port
         const apiBase = 'http://localhost:3000';
+
+        // If the page is being served from a remote host (e.g. GitHub Pages)
+        // then calls to a localhost backend will fail for site visitors.
+        // In that case, open the user's email client as a fallback so messages
+        // still reach you (uses mailto with prefilled subject/body).
+        if (window.location.hostname !== 'localhost' && apiBase.includes('localhost')) {
+            const subject = encodeURIComponent(`Portfolio message from ${name}`);
+            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+            // open mail client in a new tab/window
+            window.location.href = `mailto:unrulysypha1@gmail.com?subject=${subject}&body=${body}`;
+            statusEl.textContent = 'Opening your email client to send the message...';
+            return;
+        }
+
         const res = await fetch(apiBase + '/api/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

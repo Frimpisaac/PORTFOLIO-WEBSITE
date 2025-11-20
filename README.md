@@ -47,8 +47,41 @@ Notes / next steps
 - Replace placeholder project links and images with real content.
 - Consider adding keyboard focus styles and more ARIA attributes for high accessibility.
 
-If you'd like, I can:
-- Wire the form to Formspree or Netlify Forms.
-- Add animations or a projects lightbox.
-- Create a deploy workflow (GitHub Pages / Netlify).
+# Isaac Kweku Frimpong — Portfolio
+
+Static portfolio site (HTML, CSS, JS) showcasing projects, skills and a contact section.
+
+Live demo
+- https://Frimpisaac.github.io/PORTFOLIO-WEBSITE/
+
+Preview locally
+```powershell
+cd C:\Users\HP\OneDrive\Desktop\potforlio
+python -m http.server 8000
+# then open http://localhost:8000/ in your browser
+```
+
+Quick start (optional backend)
+- This repo includes a small local Express server (`server.js`) that can accept contact submissions and save them to `submissions.json`.
+- To run the backend locally:
+```powershell
+cd C:\Users\HP\OneDrive\Desktop\potforlio
+npm.cmd install
+node server.js
+```
+
+Notes about the contact form
+- On the public site the frontend uses a mailto fallback (opens the visitor's email client) unless a live API endpoint is configured.
+- For automated collection you can either wire the form to a hosted form service (Formspree/Getform) or deploy the Express backend (Render, Railway, etc.).
+
+Contact & Links
+- Email: unrulysypha1@gmail.com
+- GitHub: https://github.com/Frimpisaac
+
+To do / suggestions
+- Replace placeholder project links and screenshots with live demos and real repo links.
+- Optional: deploy the backend and update `index.html` `apiBase` to the deployed URL so submissions are saved automatically.
+- Optional: add a small admin view or protected listing for submissions after deploying the backend.
+
+If you want, I can update this README with a short bio, social links, or badges — tell me what to include and I'll apply it.
 
